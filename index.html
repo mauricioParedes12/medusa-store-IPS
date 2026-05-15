@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedusaIPS — Ingeniería y Procesos de Software · UNSA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* NAV */
+        nav {
+            background: #1a1a2e;
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            color: #4fc3f7;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #4fc3f7;
+        }
+
+        .nav-cta {
+            background: #4fc3f7;
+            color: #1a1a2e;
+            padding: 7px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* HERO */
+        .hero {
+            background: #1a1a2e;
+            color: white;
+            padding: 72px 32px 60px;
+            border-bottom: 3px solid #4fc3f7;
+        }
+
+        .hero-badge {
+            font-size: 0.8rem;
+            color: #4fc3f7;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: clamp(28px, 4vw, 52px);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.15;
+        }
+
+        h1 span {
+            color: #4fc3f7;
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            color: #aaa;
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .hero-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-size: 0.85rem;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; }
+
+        .btn-primary {
+            background: #4fc3f7;
+            color: #1a1a2e;
+        }
+
+        .btn-outline {
+            border: 1px solid #555;
+            color: #ccc;
+        }
+
+        /* TICKER */
+        .ticker {
+            background: #222;
+            padding: 10px 0;
+            overflow: hidden;
+            border-bottom: 1px solid #333;
+        }
+
+        .ticker-inner {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 20s linear infinite;
+        }
+
+        .ticker-item {
+            font-size: 0.78rem;
+            color: #888;
+            padding: 0 32px;
+            border-right: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .ticker-item span { color: #4fc3f7; margin-right: 6px; }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 60px 32px;
+            border-bottom: 1px solid #ddd;
+            background: white;
+        }
+
+        section:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: clamp(20px, 3vw, 32px);
+            font-weight: 700;
+            margin-bottom: 36px;
+            color: #1a1a2e;
+        }
+
+        /* SPRINTS */
+        .sprint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .sprint-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .sprint-card.active {
+            border-top: 3px solid #4fc3f7;
+        }
+
+        .sprint-number {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .sprint-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1a1a2e;
+        }
+
+        .sprint-date {
+            font-size: 0.78rem;
+            color: #999;
+            margin-bottom: 14px;
+        }
+
+        .sprint-status {
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .status-done { background: #e8f5e9; color: #388e3c; }
+        .status-active { background: #fff3e0; color: #e65100; }
+        .status-upcoming { background: #f0f0f0; color: #777; }
+
+        .sprint-tasks {
+            list-style: none;
+            font-size: 0.82rem;
+            color: #555;
+        }
+
+        .sprint-tasks li {
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .sprint-tasks li:last-child { border-bottom: none; }
+        .task-check { color: #388e3c; }
+        .task-pending { color: #bbb; }
+
+        .burndown-placeholder {
+            background: #f9f9f9;
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            padding: 40px 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.82rem;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* PRODUCT INFO */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .info-cell {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .info-label {
+            font-size: 0.72rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .info-value.big {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        /* MODULES */
+        .modules-list {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .module-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #fff;
+        }
+
+        .module-row:last-child { border-bottom: none; }
+
+        .module-row:hover { background: #f9f9f9; }
+
+        .module-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #222;
+        }
+
+        .module-num {
+            font-size: 0.7rem;
+            color: #bbb;
+        }
+
+        .module-tech {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .module-scope {
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .scope-in { background: #e8f5e9; color: #388e3c; }
+        .scope-out { background: #f0f0f0; color: #888; }
+
+        /* TEAM */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .team-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px 20px;
+        }
+
+        .team-initial {
+            width: 48px;
+            height: 48px;
+            background: #1a1a2e;
+            color: #4fc3f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+        }
+
+        .team-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1a1a2e;
+        }
+
+        .team-role {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .team-sprints {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .sprint-tag {
+            font-size: 0.67rem;
+            padding: 2px 7px;
+            border-radius: 3px;
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .sprint-tag.sm {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            border-bottom: 1px solid #eee;
+        }
+
+        .timeline-item:last-child { border-bottom: none; }
+
+        .timeline-date {
+            font-size: 0.78rem;
+            color: #888;
+            padding: 20px;
+            border-right: 1px solid #eee;
+            background: #fafafa;
+        }
+
+        .timeline-date strong {
+            display: block;
+            color: #333;
+            margin-bottom: 3px;
+            font-size: 0.82rem;
+        }
+
+        .timeline-content {
+            padding: 20px 24px;
+        }
+
+        .timeline-hito {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .timeline-detail {
+            font-size: 0.78rem;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .hito-current { color: #1565c0; }
+        .hito-next { color: #333; }
+        .hito-future { color: #999; }
+
+        /* LINKS */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .link-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .link-card:hover {
+            border-color: #4fc3f7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+
+        .link-card .arrow {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 1rem;
+            color: #bbb;
+        }
+
+        .link-card:hover .arrow { color: #4fc3f7; }
+
+        .link-icon {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .link-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1a1a2e;
+        }
+
+        .link-desc {
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.55;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1a1a2e;
+            color: #888;
+            padding: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-brand {
+            font-size: 0.8rem;
+        }
+
+        .footer-brand strong { color: #4fc3f7; }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 0.78rem;
+            color: #888;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover { color: #4fc3f7; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 12px 16px; }
+            .nav-links { display: none; }
+            .hero { padding: 52px 16px 40px; }
+            section { padding: 40px 16px; }
+            .timeline-item { grid-template-columns: 1fr; }
+            .timeline-date { border-right: none; border-bottom: 1px solid #eee; }
+            footer { padding: 24px 16px; flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">MedusaIPS</div>
+    <ul class="nav-links">
+        <li><a href="#sprint">Sprints</a></li>
+        <li><a href="#producto">Producto</a></li>
+        <li><a href="#equipo">Equipo</a></li>
+        <li><a href="#recursos">Recursos</a></li>
+    </ul>
+    <a href="https://github.com/RodrigoFFN/medusaIPS" target="_blank" class="nav-cta">↗ Repositorio</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-badge">UNSA · Ingeniería y Procesos de Software · 2026</div>
+    <h1>Scrum + DevOps<br>aplicado a <span>MedusaJS</span></h1>
+    <p class="hero-desc">
+        Implementación de un proceso ágil con GitHub Actions, CI/CD automatizado
+        y gestión Kanban sobre un e-commerce open source de más de 250,000 líneas de código.
+    </p>
+    <div class="hero-links">
+        <a href="https://github.com/RodrigoFFN/medusaIPS" target="_blank" class="btn btn-primary">↗ Ver repositorio</a>
+        <a href="https://github.com/RodrigoFFN/medusaIPS/projects" target="_blank" class="btn btn-outline">Tablero Kanban</a>
+    </div>
+</div>
+
+<!-- SPRINTS -->
+<section id="sprint">
+    <div class="section-label">Estado del proyecto</div>
+    <h2>Sprints & Hitos</h2>
+
+    <div class="sprint-grid">
+        <!-- Sprint 0 -->
+        <div class="sprint-card active">
+            <div class="sprint-number">Sprint 00</div>
+            <div class="sprint-title">Planificación & Setup</div>
+            <span class="sprint-status status-done">✓ Completado</span>
+            <ul class="sprint-tasks">
+                <li><span class="task-check">✓</span> Selección y análisis de MedusaJS</li>
+                <li><span class="task-check">✓</span> Fork del repositorio en GitHub</li>
+                <li><span class="task-check">✓</span> Configuración GitHub Projects (Kanban)</li>
+                <li><span class="task-check">✓</span> Publicación en GitHub Pages</li>
+                <li><span class="task-check">✓</span> Plan de proyecto y cronograma</li>
+            </ul>
+        </div>
+
+        <!-- Sprint 1 -->
+        <div class="sprint-card">
+            <div class="sprint-number">Sprint 01</div>
+            <div class="sprint-title">CI/CD & Entorno Local</div>
+            <span class="sprint-status status-upcoming">Próximo</span>
+            <ul class="sprint-tasks">
+                <li><span class="task-pending">○</span> Pipeline GitHub Actions (lint, test, build)</li>
+                <li><span class="task-pending">○</span> Entorno Docker local funcional</li>
+                <li><span class="task-pending">○</span> Documentación técnica de módulos</li>
+                <li><span class="task-pending">○</span> GitHub Issues — Backlog completo</li>
+            </ul>
+        </div>
+
+        <!-- Sprint 2 -->
+        <div class="sprint-card">
+            <div class="sprint-number">Sprint 02</div>
+            <div class="sprint-title">Mejora Módulo Productos</div>
+            <span class="sprint-status status-upcoming">Próximo</span>
+            <ul class="sprint-tasks">
+                <li><span class="task-pending">○</span> Mejora módulo Productos (variantes)</li>
+                <li><span class="task-pending">○</span> Staging en GitHub Pages</li>
+                <li><span class="task-pending">○</span> Retrospectiva Sprint 1</li>
+            </ul>
+        </div>
+
+        <!-- Sprint 3 -->
+        <div class="sprint-card">
+            <div class="sprint-number">Sprint 03</div>
+            <div class="sprint-title">Módulo Pedidos & Tests</div>
+            <span class="sprint-status status-upcoming">Próximo</span>
+            <ul class="sprint-tasks">
+                <li><span class="task-pending">○</span> Mejora módulo Pedidos / Inventario</li>
+                <li><span class="task-pending">○</span> Burndown chart automático (Actions)</li>
+                <li><span class="task-pending">○</span> Pruebas de integración CI/CD verde</li>
+            </ul>
+        </div>
+
+        <!-- Sprint 4 -->
+        <div class="sprint-card">
+            <div class="sprint-number">Sprint 04</div>
+            <div class="sprint-title">Documentación & IEEE</div>
+            <span class="sprint-status status-upcoming">Próximo</span>
+            <ul class="sprint-tasks">
+                <li><span class="task-pending">○</span> Documentación técnica completa</li>
+                <li><span class="task-pending">○</span> Redacción artículo IEEE</li>
+                <li><span class="task-pending">○</span> Presentación final</li>
+            </ul>
+        </div>
+
+        <!-- Burndown -->
+        <div class="sprint-card">
+            <div class="sprint-number">Burndown Chart</div>
+            <div class="sprint-title">Generado por GitHub Actions</div>
+            <div class="sprint-date">Disponible desde Sprint 1</div>
+            <div class="burndown-placeholder">
+                <div>📊</div>
+                <p>Se publicará automáticamente<br>al iniciar Sprint 1</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTO -->
+<section id="producto">
+    <div class="section-label">Software seleccionado</div>
+    <h2>MedusaJS — E-commerce headless</h2>
+
+    <div class="info-grid">
+        <div class="info-cell">
+            <div class="info-label">Líneas de código</div>
+            <div class="info-value big">250k+</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label">Licencia</div>
+            <div class="info-value big">MIT</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label">Stack backend</div>
+            <div class="info-value">Node.js · TypeScript · PostgreSQL · Redis</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label">Stack frontend</div>
+            <div class="info-value">Next.js · React (Admin Panel)</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label">Estrellas en GitHub</div>
+            <div class="info-value big">25k+</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label">Infraestructura</div>
+            <div class="info-value">Docker Compose · CI/CD ready</div>
+        </div>
+    </div>
+
+    <div class="section-label" style="margin-top: 40px;">Módulos del sistema</div>
+    <div class="modules-list">
+        <div class="module-row">
+            <div class="module-name">
+                <span class="module-num">01</span>
+                Módulo de Productos
+            </div>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <span class="module-tech">Catálogo · Variantes · Inventario · Precios</span>
+                <span class="module-scope scope-in">En alcance</span>
+            </div>
+        </div>
+        <div class="module-row">
+            <div class="module-name">
+                <span class="module-num">02</span>
+                Módulo de Pedidos
+            </div>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <span class="module-tech">Órdenes · Fulfillment · Devoluciones</span>
+                <span class="module-scope scope-in">En alcance</span>
+            </div>
+        </div>
+        <div class="module-row">
+            <div class="module-name">
+                <span class="module-num">03</span>
+                Módulo de Clientes
+            </div>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <span class="module-tech">Auth · Historial · Segmentación</span>
+                <span class="module-scope scope-out">Referencia</span>
+            </div>
+        </div>
+        <div class="module-row">
+            <div class="module-name">
+                <span class="module-num">04</span>
+                Módulo de Pagos
+            </div>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <span class="module-tech">Stripe · PayPal · Razorpay</span>
+                <span class="module-scope scope-out">Solo entorno test</span>
+            </div>
+        </div>
+        <div class="module-row">
+            <div class="module-name">
+                <span class="module-num">05</span>
+                Módulo de Envíos
+            </div>
+            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <span class="module-tech">Métodos · Tarifas · Logística</span>
+                <span class="module-scope scope-out">Fuera de alcance</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="equipo">
+    <div class="section-label">Scrum Team</div>
+    <h2>Equipo de trabajo</h2>
+
+    <div class="team-grid">
+        <div class="team-card">
+            <div class="team-initial">RF</div>
+            <div class="team-name">Rodrigo Flores Núñez</div>
+            <div class="team-role">Dev Team</div>
+            <div class="team-sprints">
+                <span class="sprint-tag sm">SM · Sprint 0</span>
+                <span class="sprint-tag sm">SM · Sprint 4</span>
+                <span class="sprint-tag">Dev · S1–S3</span>
+            </div>
+        </div>
+        <div class="team-card">
+            <div class="team-initial">ML</div>
+            <div class="team-name">Mijael Leon Ramos</div>
+            <div class="team-role">Dev Team</div>
+            <div class="team-sprints">
+                <span class="sprint-tag sm">SM · Sprint 1</span>
+                <span class="sprint-tag">Dev · S0,S2–S4</span>
+            </div>
+        </div>
+        <div class="team-card">
+            <div class="team-initial">MP</div>
+            <div class="team-name">Mauricio Paredes Miranda</div>
+            <div class="team-role">Dev Team</div>
+            <div class="team-sprints">
+                <span class="sprint-tag sm">SM · Sprint 2</span>
+                <span class="sprint-tag">Dev · S0,S1,S3,S4</span>
+            </div>
+        </div>
+        <div class="team-card">
+            <div class="team-initial">FJ</div>
+            <div class="team-name">Fabricio Jimenez Paredes</div>
+            <div class="team-role">Dev Team</div>
+            <div class="team-sprints">
+                <span class="sprint-tag sm">SM · Sprint 3</span>
+                <span class="sprint-tag">Dev · S0,S1,S2,S4</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="section-label">Cronograma</div>
+    <h2>Entregables por hito</h2>
+
+    <div class="timeline">
+        <div style="margin-bottom: 32px; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; background: #fff; padding: 16px;">
+            <div class="section-label" style="margin-bottom: 12px;">Visualización GANTT</div>
+                <a href="./cronograma.PNG" target="_blank">
+                    <img src="./cronograma.PNG" alt="Cronograma de Actividades" style="width: 35%; height: auto; display: block; border-radius: 4px;">
+                </a>
+            <p style="font-size: 0.72rem; color: #888; margin-top: 10px; text-align: center;">
+            Haz clic en la imagen para verla en tamaño completo.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<section id="recursos">
+    <div class="section-label">Links del proyecto</div>
+    <h2>Recursos y Accesos</h2>
+
+    <div class="links-grid">
+        <a href="https://github.com/RodrigoFFN/medusaIPS" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">⌥</div>
+            <div class="link-title">Repositorio Fork</div>
+            <div class="link-desc">Fork de MedusaJS con el código fuente, ramas por feature y configuración del entorno.</div>
+        </a>
+        <a href="https://github.com/RodrigoFFN/medusaIPS/projects" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">⊞</div>
+            <div class="link-title">Tablero Kanban</div>
+            <div class="link-desc">GitHub Projects con Product Backlog, Sprint Board, asignación de tareas y seguimiento en tiempo real.</div>
+        </a>
+        
+        <a href="https://github.com/RodrigoFFN/medusaIPS/issues" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">◎</div>
+            <div class="link-title">GitHub Issues</div>
+            <div class="link-desc">Historias de usuario, registro de bugs y decisiones técnicas del sprint documentadas.</div>
+        </a>
+
+        <a href="https://github.com/RodrigoFFN/medusaIPS/actions" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">⚡</div>
+            <div class="link-title">GitHub Actions</div>
+            <div class="link-desc">Pipeline CI/CD automatizado: lint → test → build → deploy. Burndown chart generado automáticamente.</div>
+        </a>
+        <a href="https://medusajs.com/docs" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">◈</div>
+            <div class="link-title">Documentación MedusaJS</div>
+            <div class="link-desc">Referencia oficial de la plataforma headless de e-commerce seleccionada.</div>
+        </a>
+        <a href="https://github.com/RodrigoFFN/medusaIPS/blob/develop/README.md" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">≡</div>
+            <div class="link-title">README técnico</div>
+            <div class="link-desc">Instrucciones de instalación local con Docker Compose, variables de entorno y estructura del proyecto.</div>
+        </a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-brand">
+        <strong>MedusaIPS</strong> · UNSA · Ingeniería y Procesos de Software · 2026<br>
+        <span style="font-size:0.72rem;">Flores · Leon · Paredes · Jimenez</span>
+    </div>
+    <div class="footer-links">
+        <a href="https://github.com/RodrigoFFN/medusaIPS" target="_blank">GitHub</a>
+        <a href="https://github.com/RodrigoFFN/medusaIPS/projects" target="_blank">Kanban</a>
+        <a href="https://medusajs.com" target="_blank">MedusaJS</a>
+    </div>
+</footer>
+
+</body>
+</html>
