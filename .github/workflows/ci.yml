@@ -1,0 +1,176 @@
+name: CI/CD Pipeline - Medusa IPS
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Cache dependencias pnpm
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Ejecutar lint (Turborepo)
+        run: pnpm lint
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Cache dependencias pnpm
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Build del proyecto (Turborepo)
+        run: pnpm build
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/medusa-store
+          REDIS_URL: redis://localhost:6379
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: medusa-store
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Cache dependencias pnpm
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Ejecutar tests (Turborepo)
+        run: pnpm test
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/medusa-store
+          REDIS_URL: redis://localhost:6379
+
+  deploy-pages:
+    name: 🚀 Deploy GitHub Pages (Staging)
+    runs-on: ubuntu-latest
+    needs: [lint, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Actualizar estado CI en index.html
+        run: |
+          FECHA=$(date '+%d/%m/%Y %H:%M UTC')
+          COMMIT="${{ github.sha }}"
+          COMMIT_SHORT="${COMMIT:0:7}"
+          sed -i "s|<!-- CI_STATUS -->|Pipeline OK — commit <code>${COMMIT_SHORT}</code> — ${FECHA}|g" index.html || true
+
+      - name: Deploy a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          exclude_assets: |
+            apps/**
+            node_modules/**
+            .github/**
+            docker-compose.yml
+            Dockerfile
+            turbo.json
+            package-lock.json
+            start.sh
+            start-storefront.sh
