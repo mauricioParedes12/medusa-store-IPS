@@ -25,3 +25,5 @@ De acuerdo al **Cronograma del Hito 01**:
 # Clonar y levantar
 git clone [https://github.com/mauricioParedes12/medusa-store-IPS.git](https://github.com/mauricioParedes12/medusa-store-IPS.git)
 docker-compose up -d
+
+![CI/CD Pipeline](https://github.com/mauricioParedes12/medusa-store-IPS/actions/workflows/ci.yml/badge.svg)
