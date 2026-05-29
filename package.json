@@ -1,6 +1,7 @@
 {
   "name": "dtc-starter-monorepo",
   "private": false,
+  "packageManager": "pnpm@10.0.0",
   "engines": {
     "node": ">=20"
   },
