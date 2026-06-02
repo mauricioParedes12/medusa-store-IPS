@@ -1,0 +1,19 @@
+name: Burndown Chart
+on:
+  schedule:
+    - cron: '0 6 * * *'   # corre cada día a las 6am
+  workflow_dispatch:
+
+jobs:
+  burndown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contar issues cerrados
+        run: |
+          CLOSED=$(gh issue list --state closed --json number | jq length)
+          OPEN=$(gh issue list --state open --json number | jq length)
+          echo "Cerrados: $CLOSED, Abiertos: $OPEN"
+          # aquí generas el JSON/imagen y lo commiteas a gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
