@@ -96,6 +96,13 @@
             color: #aaa;
             max-width: 520px;
             line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
             margin-bottom: 28px;
         }
 
@@ -197,6 +204,10 @@
 
         .sprint-card.active {
             border-top: 3px solid #4fc3f7;
+        }
+
+        .sprint-card.done {
+            border-top: 3px solid #388e3c;
         }
 
         .sprint-number {
@@ -321,7 +332,6 @@
         }
 
         .module-row:last-child { border-bottom: none; }
-
         .module-row:hover { background: #f9f9f9; }
 
         .module-name {
@@ -333,15 +343,8 @@
             color: #222;
         }
 
-        .module-num {
-            font-size: 0.7rem;
-            color: #bbb;
-        }
-
-        .module-tech {
-            font-size: 0.75rem;
-            color: #999;
-        }
+        .module-num { font-size: 0.7rem; color: #bbb; }
+        .module-tech { font-size: 0.75rem; color: #999; }
 
         .module-scope {
             font-size: 0.72rem;
@@ -443,9 +446,7 @@
             font-size: 0.82rem;
         }
 
-        .timeline-content {
-            padding: 20px 24px;
-        }
+        .timeline-content { padding: 20px 24px; }
 
         .timeline-hito {
             font-weight: 600;
@@ -526,16 +527,10 @@
             gap: 16px;
         }
 
-        .footer-brand {
-            font-size: 0.8rem;
-        }
-
+        .footer-brand { font-size: 0.8rem; }
         .footer-brand strong { color: #4fc3f7; }
 
-        .footer-links {
-            display: flex;
-            gap: 20px;
-        }
+        .footer-links { display: flex; gap: 20px; }
 
         .footer-links a {
             font-size: 0.78rem;
@@ -571,6 +566,13 @@
         Implementación de un proceso ágil con GitHub Actions, CI/CD automatizado 
         y despliegue de staging sobre un ecosistema e-commerce profesional.
     </p>
+    <div class="hero-badges">
+        <a href="https://github.com/mauricioParedes12/medusa-store-IPS/actions" target="_blank">
+            <img src="https://github.com/mauricioParedes12/medusa-store-IPS/actions/workflows/ci.yml/badge.svg" 
+                 alt="CI Pipeline Status"
+                 style="height: 22px;">
+        </a>
+    </div>
     <div class="hero-links">
         <a href="https://github.com/mauricioParedes12/medusa-store-IPS" target="_blank" class="btn btn-primary">↗ Ver repositorio</a>
     </div>
@@ -583,7 +585,7 @@
 
     <div class="sprint-grid">
         <!-- Sprint 0 -->
-        <div class="sprint-card active">
+        <div class="sprint-card done">
             <div class="sprint-number">Sprint 00</div>
             <div class="sprint-title">Planificación & Setup</div>
             <span class="sprint-status status-done">✓ Completado</span>
@@ -597,27 +599,28 @@
         </div>
 
         <!-- Sprint 1 -->
-        <div class="sprint-card">
+        <div class="sprint-card done">
             <div class="sprint-number">Sprint 01</div>
             <div class="sprint-title">CI/CD & Entorno Local</div>
-            <span class="sprint-status status-upcoming">Próximo</span>
+            <span class="sprint-status status-done">✓ Completado</span>
             <ul class="sprint-tasks">
-                <li><span class="task-pending">○</span> Pipeline GitHub Actions (lint, test, build)</li>
-                <li><span class="task-pending">○</span> Entorno Docker local funcional</li>
-                <li><span class="task-pending">○</span> Documentación técnica de módulos</li>
-                <li><span class="task-pending">○</span> GitHub Issues — Backlog completo</li>
+                <li><span class="task-check">✓</span> Pipeline GitHub Actions (lint, test, build)</li>
+                <li><span class="task-check">✓</span> Entorno Docker local funcional</li>
+                <li><span class="task-check">✓</span> Documentación técnica de módulos</li>
+                <li><span class="task-check">✓</span> GitHub Issues — Backlog completo</li>
             </ul>
         </div>
 
         <!-- Sprint 2 -->
-        <div class="sprint-card">
+        <div class="sprint-card done">
             <div class="sprint-number">Sprint 02</div>
             <div class="sprint-title">Mejora Módulo Productos</div>
-            <span class="sprint-status status-upcoming">Próximo</span>
+            <span class="sprint-status status-done">✓ Completado</span>
             <ul class="sprint-tasks">
-                <li><span class="task-pending">○</span> Mejora módulo Productos (variantes)</li>
-                <li><span class="task-pending">○</span> Staging en GitHub Pages</li>
-                <li><span class="task-pending">○</span> Retrospectiva Sprint 1</li>
+                <li><span class="task-check">✓</span> Filtrado de productos por categoría</li>
+                <li><span class="task-check">✓</span> Disponibilidad de stock en página de producto</li>
+                <li><span class="task-check">✓</span> Actualización de GitHub Pages</li>
+                <li><span class="task-check">✓</span> Retrospectiva Sprint 1</li>
             </ul>
         </div>
 
@@ -649,10 +652,10 @@
         <div class="sprint-card">
             <div class="sprint-number">Burndown Chart</div>
             <div class="sprint-title">Generado por GitHub Actions</div>
-            <div class="sprint-date">Disponible desde Sprint 1</div>
+            <div class="sprint-date">Disponible desde Sprint 3</div>
             <div class="burndown-placeholder">
                 <div>📊</div>
-                <p>Se publicará automáticamente<br>al iniciar Sprint 1</p>
+                <p>Se publicará automáticamente<br>al iniciar Sprint 3</p>
             </div>
         </div>
     </div>
@@ -670,7 +673,7 @@
                     <img src="./img/cronograma.PNG" alt="Cronograma de Actividades" style="width: 35%; height: auto; display: block; border-radius: 4px;">
                 </a>
             <p style="font-size: 0.72rem; color: #888; margin-top: 10px; text-align: center;">
-            Haz clic en la imagen para verla en tamaño completo.
+                Haz clic en la imagen para verla en tamaño completo.
             </p>
         </div>
     </div>
@@ -698,6 +701,18 @@
             <div class="link-icon">⚡</div>
             <div class="link-title">GitHub Actions CI/CD</div>
             <div class="link-desc">Visualización de los flujos de integración continua y generación de métricas de Sprint.</div>
+        </a>
+        <a href="https://github.com/mauricioParedes12/medusa-store-IPS/blob/main/docs/modulo-productos.md" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">📦</div>
+            <div class="link-title">Módulo Productos</div>
+            <div class="link-desc">Documentación del módulo de productos: filtrado por categoría y disponibilidad de stock.</div>
+        </a>
+        <a href="https://github.com/mauricioParedes12/medusa-store-IPS/blob/main/docs/arquitectura.md" target="_blank" class="link-card">
+            <span class="arrow">↗</span>
+            <div class="link-icon">🏗️</div>
+            <div class="link-title">Arquitectura del Sistema</div>
+            <div class="link-desc">Diagrama y descripción de la arquitectura del proyecto: backend, storefront y servicios Docker.</div>
         </a>
     </div>
 </section>
