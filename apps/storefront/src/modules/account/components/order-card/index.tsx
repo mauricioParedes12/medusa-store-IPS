@@ -1,9 +1,13 @@
-import { Button } from "@modules/common/components/ui"
+import { Badge, Button } from "@modules/common/components/ui"
 import { useMemo } from "react"
 
 import Thumbnail from "@modules/products/components/thumbnail"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { convertToLocale } from "@lib/util/money"
+import {
+  getFulfillmentStatusInfo,
+  getPaymentStatusInfo,
+} from "@lib/util/order-status"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderCardProps = {
@@ -23,10 +27,33 @@ const OrderCard = ({ order }: OrderCardProps) => {
     return order.items?.length ?? 0
   }, [order])
 
+  const fulfillmentStatus = useMemo(
+    () => getFulfillmentStatusInfo(order.fulfillment_status),
+    [order]
+  )
+
+  const paymentStatus = useMemo(
+    () => getPaymentStatusInfo(order.payment_status),
+    [order]
+  )
+
   return (
     <div className="bg-white flex flex-col" data-testid="order-card">
-      <div className="uppercase text-large-semi mb-1">
-        #<span data-testid="order-display-id">{order.display_id}</span>
+      <div className="flex items-center justify-between mb-1">
+        <div className="uppercase text-large-semi">
+          #<span data-testid="order-display-id">{order.display_id}</span>
+        </div>
+        <div className="flex items-center gap-x-2">
+          <Badge color={fulfillmentStatus.color} data-testid="order-status">
+            {fulfillmentStatus.label}
+          </Badge>
+          <Badge
+            color={paymentStatus.color}
+            data-testid="order-payment-status"
+          >
+            {paymentStatus.label}
+          </Badge>
+        </div>
       </div>
       <div className="flex items-center divide-x divide-gray-200 text-small-regular text-ui-fg-base">
         <span className="pr-2" data-testid="order-created-at">
