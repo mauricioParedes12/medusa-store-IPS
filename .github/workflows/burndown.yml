@@ -1,19 +1,59 @@
 name: Burndown Chart
+
 on:
   schedule:
-    - cron: '0 6 * * *'   # corre cada día a las 6am
+    - cron: '0 6 * * *'   # corre todos los días a las 6:00 UTC
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   burndown:
+    name: Generar Burndown Chart
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Contar issues cerrados
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias (matplotlib)
+        run: pip install matplotlib
+
+      - name: Obtener issues del Sprint 3
         run: |
-          CLOSED=$(gh issue list --state closed --json number | jq length)
-          OPEN=$(gh issue list --state open --json number | jq length)
-          echo "Cerrados: $CLOSED, Abiertos: $OPEN"
-          # aquí generas el JSON/imagen y lo commiteas a gh-pages
+          gh issue list --repo ${{ github.repository }} --state all \
+            --label "sprint-3" \
+            --json number,title,createdAt,closedAt,state \
+            --limit 100 > issues-sprint3.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Obtener issues del Sprint 4
+        run: |
+          gh issue list --repo ${{ github.repository }} --state all \
+            --label "sprint-4" \
+            --json number,title,createdAt,closedAt,state \
+            --limit 100 > issues-sprint4.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generar gráfico y dataset del burndown
+        run: python scripts/generate_burndown.py issues-sprint3.json issues-sprint4.json
+
+      - name: Commitear burndown actualizado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add img/burndown-chart.png img/burndown-data.json
+          if git diff --staged --quiet; then
+            echo "Sin cambios en el burndown, no se commitea nada"
+          else
+            git commit -m "chore: actualizar burndown chart automáticamente"
+            git push
+          fi
