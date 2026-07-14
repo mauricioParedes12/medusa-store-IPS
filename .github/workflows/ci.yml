@@ -147,6 +147,11 @@ jobs:
           NEXT_PUBLIC_DEFAULT_REGION: "us"
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/medusa-store
           REDIS_URL: redis://localhost:6379
+          PGHOST: localhost
+          PGPORT: "5432"
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: medusa-store
 
   deploy-pages:
     name: Deploy GitHub Pages (Staging)
