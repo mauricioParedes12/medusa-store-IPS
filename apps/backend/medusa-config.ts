@@ -20,6 +20,7 @@ module.exports = defineConfig({
     redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   },
   admin: {
+    disable: process.env.NODE_ENV === "test",
     vite: (config) => ({
       server: {
         host: "0.0.0.0",

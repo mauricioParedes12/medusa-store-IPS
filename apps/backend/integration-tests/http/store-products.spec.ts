@@ -1,0 +1,57 @@
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { ApiKeyDTO } from "@medusajs/framework/types"
+import { createApiKeysWorkflow } from "@medusajs/medusa/core-flows"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ api, getContainer }) => {
+    describe("Store: Productos", () => {
+      let publishableKey: ApiKeyDTO
+
+      beforeAll(async () => {
+        publishableKey = (
+          await createApiKeysWorkflow(getContainer()).run({
+            input: {
+              api_keys: [
+                {
+                  type: "publishable",
+                  title: "Test Key - Productos",
+                  created_by: "",
+                },
+              ],
+            },
+          })
+        ).result[0]
+      })
+
+      describe("GET /store/products", () => {
+        it("retorna 200 y una lista de productos", async () => {
+          const response = await api.get("/store/products", {
+            headers: {
+              "x-publishable-api-key": publishableKey.token,
+            },
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toHaveProperty("products")
+          expect(Array.isArray(response.data.products)).toBe(true)
+        })
+      })
+
+      describe("GET /store/product-categories", () => {
+        it("retorna 200 y una lista de categorías", async () => {
+          const response = await api.get("/store/product-categories", {
+            headers: {
+              "x-publishable-api-key": publishableKey.token,
+            },
+          })
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toHaveProperty("product_categories")
+          expect(Array.isArray(response.data.product_categories)).toBe(true)
+        })
+      })
+    })
+  },
+})
+
+jest.setTimeout(180 * 1000)

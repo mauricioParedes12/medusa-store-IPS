@@ -2,6 +2,7 @@ const { loadEnv } = require("@medusajs/utils");
 loadEnv("test", process.cwd());
 
 module.exports = {
+  testTimeout: 120000,
   transform: {
     "^.+\\.[jt]s$": [
       "@swc/jest",
@@ -16,6 +17,7 @@ module.exports = {
   moduleFileExtensions: ["js", "ts", "json"],
   modulePathIgnorePatterns: ["dist/", "<rootDir>/.medusa/"],
   setupFiles: ["./integration-tests/setup.js"],
+  setupFilesAfterEnv: ["./integration-tests/setupAfterEnv.js"],
 };
 
 if (process.env.TEST_TYPE === "integration:http") {
