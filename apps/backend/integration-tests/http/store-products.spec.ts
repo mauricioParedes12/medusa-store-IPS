@@ -1,6 +1,10 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { ApiKeyDTO } from "@medusajs/framework/types"
-import { createApiKeysWorkflow } from "@medusajs/medusa/core-flows"
+import {
+  createApiKeysWorkflow,
+  createSalesChannelsWorkflow,
+  linkSalesChannelsToApiKeyWorkflow,
+} from "@medusajs/medusa/core-flows"
 
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
@@ -8,8 +12,10 @@ medusaIntegrationTestRunner({
       let publishableKey: ApiKeyDTO
 
       beforeAll(async () => {
+        const container = getContainer()
+
         publishableKey = (
-          await createApiKeysWorkflow(getContainer()).run({
+          await createApiKeysWorkflow(container).run({
             input: {
               api_keys: [
                 {
@@ -21,6 +27,25 @@ medusaIntegrationTestRunner({
             },
           })
         ).result[0]
+
+        const salesChannel = (
+          await createSalesChannelsWorkflow(container).run({
+            input: {
+              salesChannelsData: [
+                {
+                  name: "Test Sales Channel - Productos",
+                },
+              ],
+            },
+          })
+        ).result[0]
+
+        await linkSalesChannelsToApiKeyWorkflow(container).run({
+          input: {
+            id: publishableKey.id,
+            add: [salesChannel.id],
+          },
+        })
       })
 
       describe("GET /store/products", () => {
