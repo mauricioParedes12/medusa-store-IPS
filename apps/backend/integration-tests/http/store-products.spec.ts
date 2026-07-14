@@ -11,7 +11,7 @@ medusaIntegrationTestRunner({
     describe("Store: Productos", () => {
       let publishableKey: ApiKeyDTO
 
-      beforeAll(async () => {
+      beforeEach(async () => {
         const container = getContainer()
 
         publishableKey = (
